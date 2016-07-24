@@ -59,10 +59,10 @@ class ValidationError implements \JsonSerializable
      */
     public function jsonSerialize()
     {
-        echo json_encode([
+        return [
             'field' => $this->getFieldName(),
             'message' => $this->getErrorMessage(),
             'ruleId' => $this->getRuleIdFailed()
-        ]);
+        ];
     }
 }
