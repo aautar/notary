@@ -2,7 +2,7 @@
 
 namespace Notary;
 
-class ValidationError
+class ValidationError implements \JsonSerializable
 {
     /**
      * @var string 
@@ -52,5 +52,17 @@ class ValidationError
     function getErrorMessage()
     {
         return $this->errorMessage;
+    }
+
+    /**
+     * JSON representation
+     */
+    public function jsonSerialize()
+    {
+        echo json_encode([
+            'field' => $this->getFieldName(),
+            'message' => $this->getErrorMessage(),
+            'ruleId' => $this->getRuleIdFailed()
+        ]);
     }
 }
