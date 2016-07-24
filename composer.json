@@ -1,0 +1,32 @@
+{
+    "autoload": {
+        "psr-4": {
+            "Notary\\": "lib/"
+        }
+    },
+
+    "autoload-dev": {
+        "psr-4": {
+          "Notary\\Tests\\": "tests/"
+        }
+    },
+
+    "require": {
+        "php": ">=5.4"
+    },
+
+    "require-dev": {
+        "phpunit/phpunit": "5.4.*"
+    },
+    
+    "name": "aautar/notary",
+    "description": "Library to compose and check against validation rules",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Avishkar Autar",
+            "email": "aautar@digital-radiation.com"
+        }
+    ]
+}
