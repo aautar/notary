@@ -11,13 +11,13 @@ PHP library to compose and check against validation rules
 /*
  * Identifier for validator rule
  */
-const VALIDATOR_RULE_NOT_EXISTING_USER = "__not_existing_user";
+const RULE_NOT_EXISTING_USER = "__not_existing_user";
 
 // Create Validator
 $validator = new Validator();
 
 // Add rule: user must not already be existing in system
-$validator->addRule(VALIDATOR_RULE_NOT_EXISTING_USER, 
+$validator->addRule(RULE_NOT_EXISTING_USER, 
     "User already exists", 
 
     function($_email) {
@@ -34,9 +34,9 @@ $validator->addRule(VALIDATOR_RULE_NOT_EXISTING_USER,
 
 // Add field, field value, and all rules to validate against
 $validator->addField('email', $_POST['email'], 
-        [Validator::RuleRequired, 
-         Validator::RuleValidEmail,
-         VALIDATOR_RULE_NOT_EXISTING_USER]);
+        [Validator::RULE_REQUIRED,
+         Validator::RULE_VALID_EMAIL,
+         RULE_NOT_EXISTING_USER]);
 
 // Validate and get back any errors
 $errors = $validator->validate();
