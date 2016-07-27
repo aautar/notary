@@ -17,11 +17,10 @@ const RULE_NOT_EXISTING_USER = "__not_existing_user";
 $validator = new Validator();
 
 // Add rule: user must not already be existing in system
-$validator->addRule(RULE_NOT_EXISTING_USER, 
+$validator->addRule(
+    RULE_NOT_EXISTING_USER,
     "User already exists", 
-
     function($_email) {
-
         $ua = new UserAccount(Database::db());
         $user = $ua->getAccount($_email);
         if($user == null) {
