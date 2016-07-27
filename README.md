@@ -15,18 +15,19 @@ $validator = new Validator();
 
 // Add rule: user must not already be existing in system
 $validator->addRule(VALIDATOR_RULE_NOT_EXISTING_USER, 
-"User already exists", 
+    "User already exists", 
 
-function($_email) {
+    function($_email) {
 
-    $ua = new UserAccount(Database::db());
-    $user = $ua->getAccount($_email);
-    if($user == null) {
-        return true;
+        $ua = new UserAccount(Database::db());
+        $user = $ua->getAccount($_email);
+        if($user == null) {
+            return true;
+        }
+
+        return false;            
     }
-
-    return false;            
-});
+);
 
 // Add field, field value, and all rules to validate against
 $validator->addField('email', $_POST['email'], 
