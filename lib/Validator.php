@@ -67,11 +67,23 @@ class Validator
      */
     public function addRule($_id, $_ruleCheckFailureMessage, $_ruleCheckFunction)
     {
-        if($this->getRule($_id) !== null) {
+        return $this->addNewRule(new Rule($_id, $_ruleCheckFailureMessage, $_ruleCheckFunction));
+    }
+
+    /**
+     * Add a new rule
+     *
+     * @param Rule $_newRule
+     * @return boolean
+     * @throws \LogicException
+     */
+    public function addNewRule(Rule $_newRule)
+    {
+        if($this->getRule($_newRule->getId()) !== null) {
             throw new \LogicException("Rule already added");
         }
-               
-        $this->rulesDomain[] = new Rule($_id, $_ruleCheckFailureMessage, $_ruleCheckFunction);
+
+        $this->rulesDomain[] = $_newRule;
         return true;
     }
     
