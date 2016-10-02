@@ -5,6 +5,17 @@
 
 PHP library to compose and check against validation rules
 
+## Overview
+
+Notary is driven by 2 design goals:
+
+ 1. A validation rule is just a function
+ 2. Using a validation rule means just referencing said function 
+
+No magic, no regex, no crazy syntax.
+
+Just write a function, maybe encapsulate it in a class if you like.
+
 ## Usage
 
 ```php
