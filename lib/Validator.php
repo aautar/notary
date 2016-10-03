@@ -4,8 +4,8 @@ namespace Notary;
 
 class Validator
 {
-    const RULE_REQUIRED = '_required';
-    const RULE_VALID_EMAIL = '_valid_email';
+    const RULE_REQUIRED = CommonRules\Required::RULE_ID;
+    const RULE_VALID_EMAIL = CommonRules\ValidEmail::RULE_ID;
 
     /**
      * Array of rules
@@ -28,15 +28,8 @@ class Validator
        
     function __construct()
     {
-        $this->addRule(Validator::RULE_REQUIRED, "Required",
-                        function($_data) {
-                            return (!empty($_data) && $_data !== null && strlen($_data) > 0);
-                        });          
-        
-        $this->addRule(Validator::RULE_VALID_EMAIL, "Invalid email",
-                        function($_data) {
-                            return filter_var($_data, FILTER_VALIDATE_EMAIL);
-                        });      
+        $this->addNewRule(new CommonRules\Required());
+        $this->addNewRule(new CommonRules\ValidEmail());
     }
 
     /**
