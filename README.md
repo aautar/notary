@@ -24,11 +24,10 @@ Just write a function, maybe encapsulate it in a class if you like.
 $validator = new Validator();
 
 $validator->addRule(
-    "RULE_USER_DOES_NOT_EXIST",     
+    "RULE_SERVICE_CAN_CREATE_USER",     
     "Can't create user, user already exists",
-    function($_email) { 
-        $ua = new UserAccount(Database::db());
-        return $ua->canCreateNewUser($_email);
+    function($_email) use ($userService) { 
+        return $userService->canCreateNewUser($_email);
     }
 );
 
@@ -36,7 +35,7 @@ $validator->addRule(
 $validator->addField(
     'email', 
     $_POST['email'], 
-    ["RULE_NOT_EXISTING_USER"]
+    ["RULE_SERVICE_CAN_CREATE_USER"]
 );
 
 // Validate and get back any errors
@@ -54,11 +53,10 @@ The method `Validator::addRule()` constructs an instance of the `Rule` class. In
 $validator = new Validator();
 
 $userDoesNotExistRule = new Rule(
-    "RULE_USER_DOES_NOT_EXIST", 
+    "RULE_SERVICE_CAN_CREATE_USER", 
     "Can't create user, user already exists",
-    function($_email) { 
-        $ua = new UserAccount(Database::db());
-        return $ua->canCreateNewUser($_email);
+    function($_email) use ($userService) {  
+        return $userService->canCreateNewUser($_email);
     }
 );
 
