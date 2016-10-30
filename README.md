@@ -25,10 +25,10 @@ $validator = new Validator();
 
 $validator->addRule(
     "RULE_USER_DOES_NOT_EXIST",     
-    "User already exists",
+    "Can't create user, user already exists",
     function($_email) { 
         $ua = new UserAccount(Database::db());
-        return $ua->doesUserExist($_email);
+        return $ua->canCreateNewUser($_email);
     }
 );
 
@@ -55,10 +55,10 @@ $validator = new Validator();
 
 $userDoesNotExistRule = new Rule(
     "RULE_USER_DOES_NOT_EXIST", 
-    "User already exists",
+    "Can't create user, user already exists",
     function($_email) { 
         $ua = new UserAccount(Database::db());
-        return $ua->doesUserExist($_email);
+        return $ua->canCreateNewUser($_email);
     }
 );
 
