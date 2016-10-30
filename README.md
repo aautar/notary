@@ -36,7 +36,7 @@ $validator->addRule(
 $validator->addField(
     'email', 
     $_POST['email'], 
-    [RULE_NOT_EXISTING_USER]
+    ["RULE_NOT_EXISTING_USER"]
 );
 
 // Validate and get back any errors
