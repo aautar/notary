@@ -16,41 +16,63 @@ No magic, no regex, no crazy syntax.
 
 Just write a function, maybe encapsulate it in a class if you like.
 
-## Usage
+## Examples
+
+### Defining rules with closures
 
 ```php
-/*
- * Identifier for validator rule
- */
-const RULE_NOT_EXISTING_USER = "__not_existing_user";
-
-// Create Validator
 $validator = new Validator();
 
-// Add rule: user must not already be existing in system
 $validator->addRule(
-    RULE_NOT_EXISTING_USER,
-    "User already exists", 
-    function($_email) {
+    "RULE_USER_DOES_NOT_EXIST",     
+    "User already exists",
+    function($_email) { 
         $ua = new UserAccount(Database::db());
-        $user = $ua->getAccount($_email);
-        if($user == null) {
-            return true;
-        }
-
-        return false;            
+        return $ua->doesUserExist($_email);
     }
 );
 
 // Add field, field value, and all rules to validate against
-$validator->addField('email', $_POST['email'], 
-        [Validator::RULE_REQUIRED,
-         Validator::RULE_VALID_EMAIL,
-         RULE_NOT_EXISTING_USER]);
+$validator->addField(
+    'email', 
+    $_POST['email'], 
+    [RULE_NOT_EXISTING_USER]
+);
 
 // Validate and get back any errors
 $errors = $validator->validate();
+if(empty($errors)) {
+    // We're good!
+}
+```
 
+### Defining rules with `Rule` classes
+
+The method `Validator::addRule()` constructs an instance of the `Rule` class. In some cases it may be preferable create and manage instances of the `Rule` class yourself and/or inherit from `Rule`, in such cases use `Validator::addNewRule()` to attach the rule to the validator.
+
+```php
+$validator = new Validator();
+
+$userDoesNotExistRule = new Rule(
+    "RULE_USER_DOES_NOT_EXIST", 
+    "User already exists",
+    function($_email) { 
+        $ua = new UserAccount(Database::db());
+        return $ua->doesUserExist($_email);
+    }
+);
+
+$validator->addNewRule($userDoesNotExistRule);
+
+// Add field, field value, and all rules to validate against
+$validator->addField(
+    'email', 
+    $_POST['email'], 
+    [$userDoesNotExistRule->getId()]
+);
+
+// Validate and get back any errors
+$errors = $validator->validate();
 if(empty($errors)) {
     // We're good!
 }
