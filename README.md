@@ -1,7 +1,4 @@
-#notary
-
-[![Build Status](https://travis-ci.org/aautar/notary.svg?branch=master)](https://travis-ci.org/aautar/notary)
-[![codecov](https://codecov.io/gh/aautar/notary/branch/master/graph/badge.svg)](https://codecov.io/gh/aautar/notary)
+# notary
 
 PHP library to compose and check against validation rules
 
