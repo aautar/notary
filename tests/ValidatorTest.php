@@ -6,11 +6,11 @@ use Notary\Validator;
 use Notary\Rule;
 use Notary\ValidationError;
 
-class ValidatorTest extends \PHPUnit_Framework_TestCase
+class ValidatorTest extends \PHPUnit\Framework\TestCase
 {    
     protected $formValidator = null;
     
-    public function setUp()
+    public function setUp(): void
     {       
         $this->formValidator = new Validator();
     }
@@ -20,12 +20,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $this->expectException(\LogicException::class);
         $this->formValidator->addRule(Validator::RULE_REQUIRED, "required!", function() { });
     }
-   
-    public function testAddField() 
-    {
-        $this->formValidator->addField('a', 'data', []);
-    }
-    
+
     public function testGetRuleReturnsNull()
     {
         $result = $this->formValidator->getRule(888);
@@ -73,6 +68,9 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $this->formValidator->addField("email", "", [Validator::RULE_VALID_EMAIL, Validator::RULE_REQUIRED]);
         $validationErrors = $this->formValidator->validate();
+
         $this->assertEquals(2, count($validationErrors));
+        $this->assertInstanceOf(ValidationError::class, $validationErrors[0]);
+        $this->assertInstanceOf(ValidationError::class, $validationErrors[1]);
     }
 }

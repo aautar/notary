@@ -4,7 +4,7 @@ namespace Notary\Tests;
 
 use Notary\CommonRules\ValidEmail;
 
-class ValidEmailTest extends \PHPUnit_Framework_TestCase
+class ValidEmailTest extends \PHPUnit\Framework\TestCase
 {
     public function testRuleCheckReturnsTrueForValidEmail()
     {

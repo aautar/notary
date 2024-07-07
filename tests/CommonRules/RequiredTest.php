@@ -4,7 +4,7 @@ namespace Notary\Tests;
 
 use Notary\CommonRules\Required;
 
-class RequiredTest extends \PHPUnit_Framework_TestCase
+class RequiredTest extends \PHPUnit\Framework\TestCase
 {
     public function testRuleCheckReturnsFalseForNullData()
     {

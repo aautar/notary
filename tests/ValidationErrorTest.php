@@ -5,7 +5,7 @@ namespace Notary\Tests;
 use Notary\ValidationError;
 use Notary\Rule;
 
-class ValidatorErrorTest extends \PHPUnit_Framework_TestCase
+class ValidatorErrorTest extends \PHPUnit\Framework\TestCase
 {
     public function testJsonSerializeReturnsArray()
     {
