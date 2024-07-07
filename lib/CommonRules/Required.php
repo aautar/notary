@@ -6,7 +6,7 @@ use Notary\Rule;
 
 class Required extends Rule
 {
-    const RULE_ID = self::class;
+    const RULE_ID = "notary.common_rule.required";
 
     private function check($_data) {
         return (!empty($_data));

@@ -73,4 +73,29 @@ class ValidatorTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(ValidationError::class, $validationErrors[0]);
         $this->assertInstanceOf(ValidationError::class, $validationErrors[1]);
     }
+
+    public function testValidateFailedRulesReturnsValidationErrorWithCorrectFieldName()
+    {
+        $this->formValidator->addField("email", "", [Validator::RULE_VALID_EMAIL, Validator::RULE_REQUIRED]);
+        $validationErrors = $this->formValidator->validate();
+        $this->assertEquals("email", $validationErrors[0]->getFieldName());
+    }
+
+    public function testValidateFailedRulesReturnsValidationErrorWithCorrectErrorMessage()
+    {
+        $this->formValidator->addField("email", "", [Validator::RULE_VALID_EMAIL, Validator::RULE_REQUIRED]);
+        $validationErrors = $this->formValidator->validate();
+
+        $this->assertEquals("Invalid email", $validationErrors[0]->getErrorMessage());
+        $this->assertEquals("Required", $validationErrors[1]->getErrorMessage());
+    }
+
+    public function testValidateFailedRulesReturnsValidationErrorWithCorrectRuleId()
+    {
+        $this->formValidator->addField("email", "", [Validator::RULE_VALID_EMAIL, Validator::RULE_REQUIRED]);
+        $validationErrors = $this->formValidator->validate();
+
+        $this->assertEquals("notary.common_rule.valid_email", $validationErrors[0]->getRuleIdFailed());
+        $this->assertEquals("notary.common_rule.required", $validationErrors[1]->getRuleIdFailed());
+    }
 }

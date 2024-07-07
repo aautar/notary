@@ -6,7 +6,7 @@ use Notary\Rule;
 
 class ValidEmail extends Rule
 {
-    const RULE_ID = self::class;
+    const RULE_ID = "notary.common_rule.valid_email";
 
     private function check($_data) {
         if(filter_var($_data, FILTER_VALIDATE_EMAIL) === false) {
