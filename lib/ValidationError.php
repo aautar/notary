@@ -40,7 +40,7 @@ class ValidationError implements \JsonSerializable
     /**
      * @return string
      */
-    function getFieldName()
+    function getFieldName(): string
     {
         return $this->fieldName;
     }
@@ -48,7 +48,7 @@ class ValidationError implements \JsonSerializable
     /**
      * @return string
      */
-    function getRuleIdFailed()
+    function getRuleIdFailed(): string
     {
         return $this->ruleIdFailed;
     }
@@ -56,7 +56,7 @@ class ValidationError implements \JsonSerializable
     /**
      * @return string
      */
-    function getErrorMessage()
+    function getErrorMessage(): string
     {
         return $this->errorMessage;
     }
@@ -69,7 +69,7 @@ class ValidationError implements \JsonSerializable
     /**
      * JSON representation
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'field' => $this->getFieldName(),
