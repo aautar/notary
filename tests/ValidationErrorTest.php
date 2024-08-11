@@ -20,7 +20,6 @@ class ValidatorErrorTest extends \PHPUnit\Framework\TestCase
         $error = new ValidationError("name", new Rule("r123", "something bad happened", function() { }));
         $json = json_encode($error);
 
-        $this->assertEquals('{"field":"name","message":"something bad happened","ruleId":"r123"}', $json);
+        $this->assertEquals('{"field":"name","message":"something bad happened","ruleId":"r123","ruleFailedDueToShortCircuit":false}', $json);
     }
-
 }
