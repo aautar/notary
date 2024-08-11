@@ -27,10 +27,10 @@ class Validator
     protected $fieldToData = [];
 
     /**
-     * Mapping of field to array of rule IDs to short circuit (don't evaluate, assume false) if a prior validation rule fails
-     * @var array<string, string[]>
+     * Mapping of field to whether or not validation can be short circuited
+     * @var array<string, bool>
      */
-    protected $fieldToRuleIdsToShortCircuit = [];
+    protected $fieldToAllowShortCircuitOnRuleValidationFailure = [];
        
     function __construct()
     {
@@ -94,13 +94,13 @@ class Validator
      * @param string $_field name of field
      * @param mixed $_data data within field
      * @param string[] $_ruleIds array of rule IDs to validate against
-     * @param string[] $_rulesToShortCircuit array of ruleIDs for rules to short circuit (mark failed w/o evaluating)
+     * @param bool $_shortCircuitOnRuleValidationFailure short circuit on a rule validation failure (don't validate subsequent rules, assume they've failed)
      */
-    public function addField(string $_field, $_data, array $_ruleIds, array $_rulesToShortCircuit = [])
+    public function addField(string $_field, $_data, array $_ruleIds, bool $_shortCircuitOnRuleValidationFailure = false)
     {       
         $this->fieldToRuleIdsForValidation[$_field] = $_ruleIds;
         $this->fieldToData[$_field] = $_data;
-        $this->fieldToRuleIdsToShortCircuit[$_field] = $_rulesToShortCircuit;
+        $this->fieldToAllowShortCircuitOnRuleValidationFailure[$_field] = $_shortCircuitOnRuleValidationFailure;
     }
 
     /**
@@ -116,8 +116,8 @@ class Validator
         
         foreach($this->fieldToRuleIdsForValidation as $field => $ruleIds) {
 
-            $shortCircuitRuleIds = $this->fieldToRuleIdsToShortCircuit[$field];
-            $hasRuleCheckFailureOnField = false;
+            $canShortCircuit = $this->fieldToAllowShortCircuitOnRuleValidationFailure[$field];
+            $detectedRuleValidationFailure = false;
            
             foreach($ruleIds as $rid) {
                 $rule = $this->getRule($rid);
@@ -125,8 +125,8 @@ class Validator
                     throw new \LogicException("Trying to validate against a rule that doesn't exist (${rid})");
                 }
 
-                // If prior rule check failure for field, short circuit if necessary
-                if($hasRuleCheckFailureOnField && in_array($rid, $shortCircuitRuleIds)) {
+                // If prior rule check failure for field, short circuit if allowed
+                if($detectedRuleValidationFailure && $canShortCircuit) {
                     $validationErrors[] = new ValidationError($field, $rule, true);
                     continue;
                 }
@@ -135,7 +135,7 @@ class Validator
                 $isOk = $ruleCheckFunc($this->fieldToData[$field]);
                 if(!$isOk) {
                     $validationErrors[] = new ValidationError($field, $rule, false);
-                    $hasRuleCheckFailureOnField = true;
+                    $detectedRuleValidationFailure = true;
                 }
             }
         }

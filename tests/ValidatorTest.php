@@ -105,7 +105,7 @@ class ValidatorTest extends \PHPUnit\Framework\TestCase
             "email",
             null,
             [Validator::RULE_REQUIRED, Validator::RULE_VALID_EMAIL],
-            [Validator::RULE_VALID_EMAIL]
+            true
         );
         $validationErrors = $this->formValidator->validate();
 
