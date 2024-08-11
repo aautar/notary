@@ -98,4 +98,21 @@ class ValidatorTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals("notary.common_rule.valid_email", $validationErrors[0]->getRuleIdFailed());
         $this->assertEquals("notary.common_rule.required", $validationErrors[1]->getRuleIdFailed());
     }
+
+    public function testValidateShortCircuitsRuleWhenPriorRuleFailures()
+    {
+        $this->formValidator->addField(
+            "email",
+            null,
+            [Validator::RULE_REQUIRED, Validator::RULE_VALID_EMAIL],
+            true
+        );
+        $validationErrors = $this->formValidator->validate();
+
+        $this->assertEquals("notary.common_rule.required", $validationErrors[0]->getRuleIdFailed());
+        $this->assertEquals("notary.common_rule.valid_email", $validationErrors[1]->getRuleIdFailed());
+
+        $this->assertFalse($validationErrors[0]->wasRuleFailureDueToShortCircuit());
+        $this->assertTrue($validationErrors[1]->wasRuleFailureDueToShortCircuit());
+    }
 }

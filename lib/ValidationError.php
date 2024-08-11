@@ -15,6 +15,11 @@ class ValidationError implements \JsonSerializable
     protected $ruleIdFailed;
 
     /**
+     * @var bool
+     */
+    protected $ruleFailedDueToShortCircuit;
+
+    /**
      * @var string
      */
     protected $errorMessage;
@@ -22,18 +27,20 @@ class ValidationError implements \JsonSerializable
     /**
      * @param string $_fieldName
      * @param Rule $_ruleFailed
+     * @param bool $_ruleFailedDueToShortCircuit
      */
-    public function __construct($_fieldName, Rule $_ruleFailed)
+    public function __construct(string $_fieldName, Rule $_ruleFailed, bool $_ruleFailedDueToShortCircuit=false)
     {
         $this->fieldName = $_fieldName;
         $this->ruleIdFailed = $_ruleFailed->getId();
         $this->errorMessage = $_ruleFailed->getRuleCheckFailureMessage();
+        $this->ruleFailedDueToShortCircuit = $_ruleFailedDueToShortCircuit;
     }
 
     /**
      * @return string
      */
-    function getFieldName()
+    function getFieldName(): string
     {
         return $this->fieldName;
     }
@@ -41,7 +48,7 @@ class ValidationError implements \JsonSerializable
     /**
      * @return string
      */
-    function getRuleIdFailed()
+    function getRuleIdFailed(): string
     {
         return $this->ruleIdFailed;
     }
@@ -49,20 +56,26 @@ class ValidationError implements \JsonSerializable
     /**
      * @return string
      */
-    function getErrorMessage()
+    function getErrorMessage(): string
     {
         return $this->errorMessage;
+    }
+
+    function wasRuleFailureDueToShortCircuit(): bool
+    {
+        return $this->ruleFailedDueToShortCircuit;
     }
 
     /**
      * JSON representation
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'field' => $this->getFieldName(),
             'message' => $this->getErrorMessage(),
-            'ruleId' => $this->getRuleIdFailed()
+            'ruleId' => $this->getRuleIdFailed(),
+            'ruleFailedDueToShortCircuit'=> $this->wasRuleFailureDueToShortCircuit(),
         ];
     }
 }
