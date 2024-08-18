@@ -122,7 +122,7 @@ class Validator
             foreach($ruleIds as $rid) {
                 $rule = $this->getRule($rid);
                 if($rule === null) {
-                    throw new \LogicException("Trying to validate against a rule that doesn't exist (${rid})");
+                    throw new \LogicException("Trying to validate against a rule that doesn't exist ({$rid})");
                 }
 
                 // If prior rule check failure for field, short circuit if allowed
